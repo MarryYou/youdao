@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<div class="mui-card">
+				<!--页眉，放置标题-->
+				<div class="mui-card-header">
+					有道翻译
+					<img class="mui-pull-right" src="imgs/appLogo.png" />
+				</div>
+				<!--内容区-->
+				<div class="mui-card-content">
+					<textarea id="SearchInfo" rows="5" cols="10" placeholder="请输入需要查询的关键字" style="border: 0;">	</textarea>
+					<input type="button" id="search" value="开始翻译" style="width: 100%; height: 50px; border: 0; border-top:1px solid #ccc; border-radius:4px;" />
+				</div>
+			</div>
+			<div id="show" style="border: 1px solid #DDDDDD; margin: 10px; min-height: 200px; background: #fff; color: #000; display: none;">
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/h.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			mui.init();
+			var _index, _my, _next, _prev;
+			h('#search').tap(function() {
+							var keywords = h('#SearchInfo').val();
+							if(keywords.length < 1) {
+								mui.toast('请输入要翻译的文本');
+								return false;
+							}
+							mui.getJSON(
+								'http://fanyi.youdao.com/openapi.do?keyfrom=testorot&key=1145972070&type=data&doctype=json&version=1.1&q=' + keywords,
+								function(data) {
+									console.log(JSON.stringify(data));
+									h('#show').html(data.translation);
+									h('#show').show();
+								}
+							);
+						});
+						mui.plusReady(function() {
+							_my = plus.webview.currentWebview();
+							_next = plus.webview.getWebviewById('sub3.html');
+							_index = plus.webview.getLaunchWebview();
+							_prev = plus.webview.getWebviewById('sub1.html');
+							_my.drag({
+								direction: "left",
+								moveMode: "followFinger"
+							}, {
+								view: _next,
+								moveMode: "follow"
+							}, function(e) {
+								if(e.type == 'end' && e.result) {
+									_index.evalJS('h("#navFooter").find("a").removeClass("mui-active"); h("#menu3").addClass("mui-active");');
+								}
+							});
+
+							_my.drag({
+								direction: "right",
+								moveMode: "followFinger"
+							}, {
+								view: _prev,
+								moveMode: "follow"
+							}, function(e) {
+								if(e.type == 'end' && e.result) {
+									_index.evalJS('h("#navFooter").find("a").removeClass("mui-active"); h("#menu1").addClass("mui-active");');
+								}
+							});
+						})
+		</script>
+	</body>
+
+</html>

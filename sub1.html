@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<div class="mui-slider">
+				<div class="mui-slider-group mui-slider-loop" id="silder1"></div>
+				<div class="mui-slider-indicator" id="point"></div>
+			</div>
+			<ul class="mui-table-view" id="newsUi" style="margin-bottom: 10px;">
+			</ul>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/h.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			mui.init();
+			var _my, _next, _index;
+			mui.plusReady(function() {
+				mui.get(
+					'http://hoa.hcoder.net/index.php?user=hcoder&pwd=hcoder&m=lunbo',
+					function(res) {
+						var imgs = res.split('--hcSplitor--');
+						var html = '<div class="mui-slider-item"><a href="#">' + imgs[imgs.length - 1] + '</a></div>';
+						var points = '';
+						imgs.forEach(function(v) {
+							html += 'div class="mui-slider-item"><a href="#">' + v + '</a></div>';
+							points += '<div class="mui-indicator"></div>';
+						})
+						html += '<div class="mui-slider-item"><a href="#">' + imgs[0] + '</a></div>';
+						h('#silder1').html(html);
+						h('#point').html(points);
+						var gallery = mui('.mui-slider');
+						gallery.slider({
+							interval: 5000
+						});
+						mui.get(
+							'http://hoa.hcoder.net/index.php?user=hcoder&pwd=hcoder&m=mediaList&page=1',
+							function(res) {
+								var news = res.split('--hcSplitor--');
+								console.log(news);
+								var html = '';
+								news.forEach(function(v, i) {
+									var list = news[i].split('--hcListSplitor--');
+									console.log(list[0]);
+									html += '<li class="mui-table-view-cell mui-media"><a href="javascript:openInfo(' + list[0] + ');"><img class="mui-media-object mui-pull-left" src=' + list[1] + '><div class="mui-media-body">' + list[2] + '</div></a></li>';
+								})
+								h('#newsUi').html(html);
+							}
+						);
+						_my = plus.webview.currentWebview(); //获取当前的view窗口
+						_next = plus.webview.getWebviewById('sub2.html'); //获取指定id的view窗口
+						_index = plus.webview.getLaunchWebview(); //获取父view窗口
+						_my.drag({
+							direction: 'left',
+							moveMode: 'followFinger'
+						}, {
+							view: _next,
+							moveMode: 'follow'
+						}, function(e) {
+							if(e.type == 'end' && e.result) {
+								_index.evalJS('h("#navFooter").find("a").removeClass("mui-active"); h("#menu2").addClass("mui-active");');
+							}
+						});
+
+					}
+				);
+			})
+
+			function openInfo(id) {
+				mui.openWindow({
+					url: 'newCon.html',
+					id: 'newCon.html',
+					extras: {
+						newId: id
+					}
+				})
+			}
+		</script>
+	</body>
+
+</html>

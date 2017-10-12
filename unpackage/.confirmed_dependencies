@@ -1,0 +1,72 @@
+{
+  "sub2.html": {
+    "href": "sub2.html",
+    "resources": [
+      "css/mui.css",
+      "js/mui.min.js",
+      "js/h.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "sub4.html": {
+    "href": "sub4.html",
+    "resources": [
+      "css/mui.css",
+      "js/mui.min.js",
+      "js/h.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "sub3.html": {
+    "href": "sub3.html",
+    "resources": [
+      "css/mui.css",
+      "js/mui.min.js",
+      "js/h.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "newCon.html": {
+    "href": "newCon.html",
+    "resources": [
+      "css/mui.css",
+      "js/mui.min.js",
+      "js/h.js",
+      "imgs/share.png"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "sub1.html": {
+    "href": "sub1.html",
+    "resources": [
+      "css/mui.css",
+      "js/mui.min.js",
+      "js/h.js"
+    ],
+    "refer": [
+      "newCon.html",
+      "sub2.html"
+    ],
+    "priority": 0
+  },
+  "index.html": {
+    "href": "index.html",
+    "resources": [
+      "js/mui.min.js",
+      "js/h.js",
+      "css/mui.css",
+      "imgs/logo.png"
+    ],
+    "refer": [
+      "sub2.html",
+      "sub4.html",
+      "sub3.html",
+      "sub1.html"
+    ],
+    "priority": 0
+  }
+}
